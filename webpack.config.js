@@ -4,7 +4,7 @@ var path = require('path');
 module.export = {
     devtool: 'inline-source-map', //Output line numbers for debug
     entry: [ //where webpack should look for the entry file i.e. index.js
-        'webpack-dev-server/client?http://127.0.0.1:8082',
+        'webpack-dev-server/client?http://127.0.0.1:8080',
         'webpack/hot/only-dev-server', //hot is live reloading
         './src'
     ],
@@ -16,16 +16,23 @@ module.export = {
         modulesDirectories: ['node_modules', 'src'],
         extension: ['', '.js']
     },
-    module: [{ 
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-            presets: ['es2015']
-        }
-    }],
+    module: {
+        loaders: [
+        {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel',
+            query: {
+                presets: ['es2015']
+            }
+        },
+        {
+            test: /\.html$/,
+            loader: 'raw'
+        }]   
+    },
     plugins: [
-        new webpack.HotModulesReplacementPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin()
     ],
     devServer: {
